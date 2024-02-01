@@ -24,7 +24,7 @@ resource "aws_ecs_service" "my_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets = ["vpc-0e524f1fb913a10cd"] 
+    subnets = ["subnet-0287356ba65c47876"] 
   }
 }
 
