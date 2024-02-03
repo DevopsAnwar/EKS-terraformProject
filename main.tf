@@ -56,7 +56,7 @@ resource "aws_ecs_service" "my_service" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.sun_api.arn
+    target_group_arn = aws_lb_target_group.my_api.arn
     container_name   = "sun-api"
     container_port   = "3000"
   }
