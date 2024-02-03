@@ -43,8 +43,28 @@ resource "aws_ecs_service" "my_service" {
 
   network_configuration {
     assign_public_ip = false
-    subnets = ["subnet-0287356ba65c47876"] 
+
+    security_groups = [
+      aws_security_group.egress_all.id,
+      aws_security_group.ingress_api.id,
+    ]
+
+    subnets = [
+      aws_subnet.private_d.id,
+      aws_subnet.private_e.id,
+    ]
   }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.sun_api.arn
+    container_name   = "sun-api"
+    container_port   = "3000"
+  }
+
+#  network_configuration {
+#    assign_public_ip = false
+#    subnets = ["subnet-0287356ba65c47876"] 
+#  }
 }
 
 
@@ -74,4 +94,53 @@ data "aws_iam_policy" "ecs_task_execution_role" {
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   role       = aws_iam_role.my_api_task_execution_role.name
   policy_arn = data.aws_iam_policy.ecs_task_execution_role.arn
+}
+
+resource "aws_lb_target_group" "my_api" {
+  name        = "my-api"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = aws_vpc.app_vpc.id
+
+  health_check {
+    enabled = true
+    path    = "/health"
+  }
+
+  depends_on = [aws_alb.my_api]
+}
+
+resource "aws_alb" "my_api" {
+  name               = "my-api-lb"
+  internal           = false
+  load_balancer_type = "application"
+
+  subnets = [
+    aws_subnet.public_d.id,
+    aws_subnet.public_e.id,
+  ]
+
+  security_groups = [
+    aws_security_group.http.id,
+    aws_security_group.https.id,
+    aws_security_group.egress_all.id,
+  ]
+
+  depends_on = [aws_internet_gateway.igw]
+}
+
+resource "aws_alb_listener" "my_api_http" {
+  load_balancer_arn = aws_alb.my_api.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.my_api.arn
+  }
+}
+
+output "alb_url" {
+  value = "http://${aws_alb.my_api.dns_name}"
 }
