@@ -2,7 +2,7 @@ resource "aws_ecs_cluster" "my_cluster" {
   name = "my-ecs-cluster"
 }
 
-resource "aws_ecs_task_definition" "my_task" {
+resource "aws_ecs_task_definition" "my_api" {
   family                   = "my-task-family"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -11,26 +11,24 @@ resource "aws_ecs_task_definition" "my_task" {
 
   execution_role_arn = aws_iam_role.my_api_task_execution_role.arn
 
-
- container_definitions = <<EOF
+  container_definitions = <<EOF
   [
     {
-      "name": "my-container",
-      "image": "anastasiyaohal/clockbox:latest"
+      "name": "my-api",
+      "image": "anastasiyaohal/clockbox:latest",
       "portMappings": [
-          {
-            "containerPort": 3000
-          }
+        {
+          "containerPort": 3000
+        }
       ]
     }
   ]
   EOF
-}
 
 resource "aws_ecs_service" "my_api" {
   name            = "my-api"
   cluster         = aws_ecs_cluster.my_cluster.id
-  task_definition = aws_ecs_task_definition.my_task.arn
+  task_definition = aws_ecs_task_definition.my_api.arn
   launch_type     = "FARGATE"
   desired_count = 2
 
