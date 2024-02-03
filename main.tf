@@ -9,8 +9,8 @@ resource "aws_ecs_task_definition" "my_task" {
   cpu                      = "256"
   memory                   = "512"
 
-  execution_role_arn = aws_iam_role.ecs_execution_role.arn
-  task_role_arn = aws_iam_role.ecs_execution_role.arn
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn = aws_iam_role.ecs_task_execution_role.arn
 
 #  container_definitions = jsonencode([{
 #    name  = "my-container"
@@ -50,22 +50,31 @@ resource "aws_ecs_service" "my_service" {
   }
 }
 
-resource "aws_iam_role" "ecs_execution_role" {
-  name = "ecs_execution_role"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Action = "sts:AssumeRole",
-      Effect = "Allow",
-      Principal = {
-        Service = "ecs-tasks.amazonaws.com"
-      }
-    }]
-  })
+resource "aws_iam_role" "my_api_task_execution_role" {
+  name               = "my-api-task-execution-role"
+  assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role.json
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy" {
-  role       = aws_iam_role.ecs_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+data "aws_iam_policy_document" "ecs_task_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+# Normally we'd prefer not to hardcode an ARN in our Terraform, but since this is
+# an AWS-managed policy, it's okay.
+data "aws_iam_policy" "ecs_task_execution_role" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# Attach the above policy to the execution role.
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
+  role       = aws_iam_role.my_api_task_execution_role.name
+  policy_arn = data.aws_iam_policy.ecs_task_execution_role.arn
 }
