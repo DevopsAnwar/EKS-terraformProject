@@ -24,6 +24,7 @@ resource "aws_ecs_task_definition" "my_api" {
     }
   ]
   EOF
+}
 
 resource "aws_ecs_service" "my_api" {
   name            = "my-api"
