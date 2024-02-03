@@ -12,17 +12,31 @@ resource "aws_ecs_task_definition" "my_task" {
   execution_role_arn = aws_iam_role.ecs_execution_role.arn
   task_role_arn = aws_iam_role.ecs_execution_role.arn
 
-  container_definitions = jsonencode([{
-    name  = "my-container"
-    image = "anastasiyaohal/clockbox:latest" 
-    essential = true
-      portMappings = [
+#  container_definitions = jsonencode([{
+#    name  = "my-container"
+#    image = "anastasiyaohal/clockbox:latest" 
+#    essential = true
+#      portMappings = [
+#        {
+#          containerPort = 80
+#          hostPort      = 80
+#        }
+#      ]
+#  }])
+
+ container_definitions = <<EOF
+  [
+    {
+      "name": "sun-api",
+      "image": "anastasiyaohal/clockbox:latest",
+      "portMappings": [
         {
-          containerPort = 80
-          hostPort      = 80
+          "containerPort": 3000
         }
       ]
-  }])
+    }
+  ]
+  EOF
 }
 
 resource "aws_ecs_service" "my_service" {
