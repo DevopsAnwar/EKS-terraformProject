@@ -27,13 +27,8 @@ resource "aws_ecs_task_definition" "my_task" {
  container_definitions = <<EOF
   [
     {
-      "name": "sun-api",
-      "image": "anastasiyaohal/clockbox:latest",
-      "portMappings": [
-        {
-          "containerPort": 3000
-        }
-      ]
+      "name": "my-container",
+      "image": "anastasiyaohal/clockbox:latest"
     }
   ]
   EOF
@@ -46,6 +41,7 @@ resource "aws_ecs_service" "my_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
+    assign_public_ip = false
     subnets = ["subnet-0287356ba65c47876"] 
   }
 }
