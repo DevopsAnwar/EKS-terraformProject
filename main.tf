@@ -17,6 +17,11 @@ resource "aws_ecs_task_definition" "my_task" {
     {
       "name": "my-container",
       "image": "anastasiyaohal/clockbox:latest"
+      "portMappings": [
+          {
+            "containerPort": 3000
+          }
+      ]
     }
   ]
   EOF
