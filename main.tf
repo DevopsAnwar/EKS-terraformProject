@@ -10,19 +10,7 @@ resource "aws_ecs_task_definition" "my_task" {
   memory                   = "512"
 
   execution_role_arn = aws_iam_role.my_api_task_execution_role.arn
-  task_role_arn = aws_iam_role.my_api_task_execution_role.arn
 
-#  container_definitions = jsonencode([{
-#    name  = "my-container"
-#    image = "anastasiyaohal/clockbox:latest" 
-#    essential = true
-#      portMappings = [
-#        {
-#          containerPort = 80
-#          hostPort      = 80
-#        }
-#      ]
-#  }])
 
  container_definitions = <<EOF
   [
@@ -57,7 +45,7 @@ resource "aws_ecs_service" "my_service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.my_api.arn
-    container_name   = "sun-api"
+    container_name   = "my-api"
     container_port   = "3000"
   }
 
