@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "my_task" {
 
   container_definitions = jsonencode([{
     name  = "my-container"
-    image = "anastasiyaohal/clockbox:latest" 
+    image = "anastasiyaohal/alpine:0.01" 
   }])
 }
 
