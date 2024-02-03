@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "my_task" {
 resource "aws_ecs_service" "my_api" {
   name            = "my-api"
   cluster         = aws_ecs_cluster.my_cluster.id
-  task_definition = aws_ecs_task_definition.my_api.arn
+  task_definition = aws_ecs_task_definition.my_task.arn
   launch_type     = "FARGATE"
   desired_count = 2
 
