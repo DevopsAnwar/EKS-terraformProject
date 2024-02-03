@@ -10,6 +10,7 @@ resource "aws_ecs_task_definition" "my_task" {
   memory                   = "512"
 
   execution_role_arn = aws_iam_role.ecs_execution_role.arn
+  task_role_arn = aws_iam_role.ecs_execution_role.arn
 
   container_definitions = jsonencode([{
     name  = "my-container"
@@ -48,4 +49,9 @@ resource "aws_iam_role" "ecs_execution_role" {
       }
     }]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
