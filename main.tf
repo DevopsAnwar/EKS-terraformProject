@@ -31,6 +31,8 @@ resource "aws_ecs_service" "my_api" {
   cluster         = aws_ecs_cluster.my_cluster.id
   task_definition = aws_ecs_task_definition.my_api.arn
   launch_type     = "FARGATE"
+  
+#By default, the ECS service won’t start any containers, we need to tell it how many containers we want.
   desired_count = 2
 
   network_configuration {
