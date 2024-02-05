@@ -46,14 +46,14 @@ resource "aws_ecs_service" "my_api" {
       aws_subnet.private_e.id,
     ]
   }
-}
+
   load_balancer {
     target_group_arn = aws_lb_target_group.my_api.arn
     container_name   = "my-api"
     container_port   = "3000"
   }
 
-
+}
 resource "aws_iam_role" "my_api_task_execution_role" {
   name               = "my-api-task-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role.json
