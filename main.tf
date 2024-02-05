@@ -53,12 +53,6 @@ resource "aws_ecs_service" "my_api" {
     container_port   = "3000"
   }
 
-#  network_configuration {
-#    assign_public_ip = false
-#    subnets = ["subnet-0287356ba65c47876"] 
-#  }
-}
-
 
 resource "aws_iam_role" "my_api_task_execution_role" {
   name               = "my-api-task-execution-role"
@@ -76,8 +70,6 @@ data "aws_iam_policy_document" "ecs_task_assume_role" {
   }
 }
 
-# Normally we'd prefer not to hardcode an ARN in our Terraform, but since this is
-# an AWS-managed policy, it's okay.
 data "aws_iam_policy" "ecs_task_execution_role" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
