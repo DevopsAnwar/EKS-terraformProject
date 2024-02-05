@@ -54,6 +54,11 @@ resource "aws_ecs_service" "my_api" {
   }
 
 }
+
+# This is the role under which ECS will execute our task. 
+# The assume_role_policy field works with the following aws_iam_policy_document to allow
+# ECS tasks to assume this role we're creating.
+
 resource "aws_iam_role" "my_api_task_execution_role" {
   name               = "my-api-task-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role.json
@@ -74,6 +79,7 @@ data "aws_iam_policy" "ecs_task_execution_role" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+# This will attach the above policy to the execution role.
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   role       = aws_iam_role.my_api_task_execution_role.name
   policy_arn = data.aws_iam_policy.ecs_task_execution_role.arn
@@ -127,3 +133,7 @@ resource "aws_alb_listener" "my_api_http" {
 output "alb_url" {
   value = "http://${aws_alb.my_api.dns_name}"
 }
+
+# This last output block is important because it will tell us what URL 
+# we’ll use to reach the service without us having to go 
+# into the AWS console to figure it out.
