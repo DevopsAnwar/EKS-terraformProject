@@ -46,7 +46,7 @@ resource "aws_ecs_service" "my_api" {
       aws_subnet.private_e.id,
     ]
   }
-
+}
   load_balancer {
     target_group_arn = aws_lb_target_group.my_api.arn
     container_name   = "my-api"
