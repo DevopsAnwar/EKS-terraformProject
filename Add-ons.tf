@@ -4,17 +4,15 @@ resource "aws_eks_addon" "vpc_cni" {
   resolve_conflicts = "OVERWRITE"
 }
 
-resource "helm_release" "ebs_csi_driver" {
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-ebs-csi-driver"
-  namespace  = "kube-system"
-  name       = "ebs-csi-driver"
-
-  set {
-    name  = "enableVolumeScheduling"
-    value = "true"
+resource "kubernetes_config_map" "ebs_csi_driver_config" {
+  metadata {
+    name      = "ebs-csi-driver"
+    namespace = "kube-system"
   }
 
+  data = {
+    "enableVolumeScheduling" = "true"
+  }
   depends_on = [aws_eks_cluster.demo]
 }
 
