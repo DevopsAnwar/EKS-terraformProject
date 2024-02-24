@@ -32,3 +32,7 @@ KUBECONFIG
 output "kubeconfig" {
   value = "${local.kubeconfig}"
 }
+
+output "addon_arn" {
+  value = aws_eks_addon.vpc_cni.arn
+}
