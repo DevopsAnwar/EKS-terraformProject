@@ -1,6 +1,6 @@
 resource "aws_eks_addon" "vpc_cni" {
   addon_name   = "vpc-cni"
-  cluster_name = data.aws_eks_cluster.cluster.id
+  cluster_name = "demo"
   resolve_conflicts = "OVERWRITE"
 }
 
