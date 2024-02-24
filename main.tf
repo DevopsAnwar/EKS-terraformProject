@@ -116,7 +116,7 @@ resource "aws_eks_node_group" "private-nodes" {
  resource "aws_launch_template" "eks-with-disks" {
    name = "eks-with-disks"
 
-   key_name = "local-provisioner"
+   key_name = "local"
 
    block_device_mappings {
      device_name = "/dev/xvdb"
