@@ -78,7 +78,12 @@ resource "aws_eks_node_group" "private-nodes" {
     aws_subnet.private-us-east-1b.id
   ]
 
-  capacity_type  = "ON_DEMAND"
+    capacity {
+    desired_capacity = 5
+    max_capacity     = 10
+    min_capacity     = 0
+  }
+
   instance_types = ["t3.small"]
 
   scaling_config {
