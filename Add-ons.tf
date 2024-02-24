@@ -4,17 +4,13 @@ resource "aws_eks_addon" "vpc_cni" {
   resolve_conflicts = "OVERWRITE"
 }
 
-resource "kubernetes_config_map" "ebs_csi_driver_config" {
-  metadata {
-    name      = "ebs-csi-driver"
-    namespace = "kube-system"
-  }
-
-  data = {
-    "enableVolumeScheduling" = "true"
-  }
-  depends_on = [aws_eks_cluster.demo]
+resource "aws_eks_addon" "vpc_csi" {
+  addon_name   = "vpc-csi"
+  cluster_name = "demo"
+  resolve_conflicts = "OVERWRITE"
 }
+
+
 
 
 
