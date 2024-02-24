@@ -25,7 +25,7 @@ users:
       args:
         - "token"
         - "-i"
-        - "${var.cluster-name}"
+        - "demo"
 KUBECONFIG
 }
 
