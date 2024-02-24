@@ -78,7 +78,7 @@ resource "aws_eks_node_group" "private-nodes" {
     aws_subnet.private-us-east-1b.id
   ]
 
-    capacity {
+  capacity {
     desired_capacity = 5
     max_capacity     = 10
     min_capacity     = 0
