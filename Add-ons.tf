@@ -17,7 +17,7 @@ variable "addons" {
   #  },
     {
       name    = "vpc-cni"
-      version = "v1.10.1-eksbuild.1"
+      version = "v1.16.0-eksbuild.1"
     },
    # {
    #   name    = "coredns"
@@ -25,7 +25,7 @@ variable "addons" {
    # },
     {
       name    = "aws-ebs-csi-driver"
-      version = "v1.17.0-eksbuild.1"
+      version = "v1.27.0-eksbuild.1"
     }
   ]
 }
