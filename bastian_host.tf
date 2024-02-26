@@ -51,11 +51,11 @@ resource "aws_instance" "bastion" {
   key_name = "local"
 }
 
-resource "aws_instance" "private" {
-  ami           = "ami-0a75bd84854bc95c9"
-  instance_type = "t3.large"
-  subnet_id = aws_subnet.private-us-east-1b.id
-  vpc_security_group_ids = [aws_security_group.private-ssh.id]
-  key_name = "local"
-}
+#resource "aws_instance" "private" {
+#  ami           = "ami-0a75bd84854bc95c9"
+#  instance_type = "t3.large"
+#  subnet_id = aws_subnet.private-us-east-1b.id
+#  vpc_security_group_ids = [aws_security_group.private-ssh.id]
+#  key_name = "local"
+#}
 
