@@ -49,6 +49,10 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [aws_security_group.bastion-allow-ssh.id]
 
   key_name = "local"
+  
+  tags = {
+    Name = "main"
+  }
 }
 
 #resource "aws_instance" "private" {
