@@ -51,7 +51,7 @@ resource "aws_instance" "bastion" {
   key_name = "local"
   
   tags = {
-    Name = "main"
+    Name = "bastian_host"
   }
 }
 
