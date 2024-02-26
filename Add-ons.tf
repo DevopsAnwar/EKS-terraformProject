@@ -7,7 +7,6 @@
 variable "addons" {
   type = list(object({
     name    = string
-    version = string
   }))
 
   default = [
@@ -17,7 +16,7 @@ variable "addons" {
   #  },
     {
       name    = "vpc-cni"
-      version = "v1.10.1-eksbuild.1"
+   #   version = "v1.10.1-eksbuild.1"
     },
    # {
    #   name    = "coredns"
@@ -25,7 +24,7 @@ variable "addons" {
    # },
     {
       name    = "aws-ebs-csi-driver"
-      version = "v1.4.0-eksbuild.preview"
+    #  version = "v1.4.0-eksbuild.preview"
     }
   ]
 }
