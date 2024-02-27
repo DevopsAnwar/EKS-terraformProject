@@ -11,7 +11,7 @@ resource "aws_eks_addon" "csi" {
   addon_name        = "aws-ebs-csi-driver"
   addon_version     = "v1.10.0-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
-  spec {
-    replicas = 2
-  }
+  
+  replicas = 2
+  
 }
