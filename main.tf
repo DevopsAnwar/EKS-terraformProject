@@ -28,6 +28,11 @@ resource "aws_eks_cluster" "demo" {
   role_arn         = aws_iam_role.demo.arn
 
   vpc_config {
+    
+    endpoint_private_access = true
+
+    endpoint_public_access = true
+
     subnet_ids = [
       aws_subnet.private-us-east-1a.id,
       aws_subnet.private-us-east-1b.id,
