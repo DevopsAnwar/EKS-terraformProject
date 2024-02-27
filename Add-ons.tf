@@ -9,7 +9,7 @@ resource "aws_eks_addon" "cni" {
 resource "aws_eks_addon" "csi" {
   cluster_name      = "demo"
   addon_name        = "vpc-ebs-csi-drive"
-  addon_version     = "v1.20.0-eksbuild.1"
+  addon_version     = "v1.15.1-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
 
 }
