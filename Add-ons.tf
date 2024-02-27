@@ -1,9 +1,3 @@
-#resource "aws_eks_addon" "vpc_cni" {
-#  addon_name   = "vpc-cni"
-#  cluster_name = "demo"
-#  resolve_conflicts = "OVERWRITE"
-#}
-
 variable "addons" {
   type = list(object({
     name    = string
@@ -32,7 +26,7 @@ variable "addons" {
 
 resource "aws_eks_addon" "addons" {
   for_each          = { for addon in var.addons : addon.name => addon }
-  cluster_name      = aws_eks_cluster.demo.id
+  cluster_name      = "demo"
   addon_name        = each.value.name
   addon_version     = each.value.version
   resolve_conflicts = "OVERWRITE"
