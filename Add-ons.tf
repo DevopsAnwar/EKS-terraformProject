@@ -1,34 +1,15 @@
-variable "addons" {
-  type = list(object({
-    name    = string
-    version = string
-  }))
+resource "aws_eks_addon" "cni" {
+  cluster_name      = "demo"
+  addon_name        = "vpc-cni"
+  version           = "v1.16.0-eksbuild.1"
+  resolve_conflicts = "OVERWRITE"
 
-  default = [
-  #  {
-  #    name    = "kube-proxy"
-  #    version = "v1.21.2-eksbuild.2"
-  #  },
-    {
-      name    = "vpc-cni"
-      version = "v1.16.0-eksbuild.1"
-    },
-   # {
-   #   name    = "coredns"
-   #   version = "v1.8.4-eksbuild.1"
-   # },
-    {
-      name    = "aws-ebs-csi-driver"
-      version = "v1.27.0-eksbuild.1"
-    }
-  ]
 }
 
-resource "aws_eks_addon" "addons" {
-  for_each          = { for addon in var.addons : addon.name => addon }
+resource "aws_eks_addon" "csi" {
   cluster_name      = "demo"
-  addon_name        = each.value.name
-  addon_version     = each.value.version
+  addon_name        = "vpc-ebs-csi-drive"
+  version           = "v1.28.0-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
 
 }
