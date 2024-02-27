@@ -30,5 +30,18 @@ resource "aws_eks_addon" "addons" {
   addon_name        = each.value.name
   addon_version     = each.value.version
   resolve_conflicts = "OVERWRITE"
-  resolve_conflicts_on_create = "OVERWRITE"
+
+configuration_values = jsonencode({
+    replicaCount = 2
+    resources = {
+      limits = {
+        cpu    = "100m"
+        memory = "150Mi"
+      }
+      requests = {
+        cpu    = "100m"
+        memory = "150Mi"
+      }
+    }
+  })
 }
