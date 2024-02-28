@@ -135,52 +135,6 @@ resource "aws_eks_node_group" "private-nodes" {
    }
  }
 
-resource "aws_security_group" "alb_sg" {
-  name        = "alb-sg"
-  description = "Security group for Application Load Balancer"
-
-  vpc_id = aws_vpc.main.id # Specify your VPC ID
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow traffic from anywhere
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow traffic from anywhere
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"] # Allow outbound traffic to anywhere
-  }
-  tags = {
-    Name = "eks-alb-sg"
-  }
-}
-
-module "lb_role" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-
-  role_name = "eks_lb"
-  attach_load_balancer_controller_policy = true
-
-  oidc_providers = {
-    main = {
-      provider_arn               = "arn:aws:iam::012345678901:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/5C54DDF35ER19312844C7333374CC09D"
-      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
-    }
-  }
-}
-
-
 
 # This will allow granting IAM permissions based on the service account used by the pod
 data "tls_certificate" "eks" {
