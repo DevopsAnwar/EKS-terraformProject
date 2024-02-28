@@ -1,4 +1,4 @@
-resource "aws_eks_addon" "cni" {
+mresource "aws_eks_addon" "cni" {
   cluster_name      = "demo"
   addon_name        = "vpc-cni"
   addon_version     = "v1.16.0-eksbuild.1"
@@ -22,7 +22,7 @@ module "irsa-ebs-csi" {
   version = "4.7.0"
 
   create_role                   = true
-  role_name                     = "AmazonEKSTFEBSCSIRole-${module.eks.cluster_name}"
+  role_name                     = "AmazonEKSTFEBSCSIRole-demo"
   provider_url                  = module.eks.oidc_provider
   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
