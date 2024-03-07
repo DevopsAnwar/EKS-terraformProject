@@ -28,6 +28,14 @@ jobs:
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region us-east-1 --name demo
 
+      - name: Install kubectl
+        run: | 
+          curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/darwin/amd64/kubectl
+
+      - name: Create ns  
+        run: | 
+          kubectl create ns vault
+
       - name: Install Helm
         run: |
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
@@ -36,8 +44,6 @@ jobs:
 
       - name: Deploy Helm Chart
         run: |
-          kubectl create ns harbor
-          kubens harbor
-          helm repo add harbor https://helm.goharbor.io
-          helm install my-harbor harbor/harbor --version 1.14.0 -n harbor
+          helm repo add hashicorp https://helm.releases.hashicorp.com
+          helm install my-vault hashicorp/vault --version 0.27.0 -n vault
         
