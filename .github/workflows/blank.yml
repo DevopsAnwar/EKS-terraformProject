@@ -25,5 +25,17 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
 
-     # - name: Terraform Destroy
-     #   run: terraform destroy -auto-approve
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --region us-east-1 --name demo
+
+      - name: Install Helm
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod +x get_helm.sh
+          ./get_helm.sh
+
+      - name: Deploy Helm Chart
+        run: |
+          helm repo add harbor https://helm.goharbor.io
+          helm install my-harbor harbor/harbor --version 1.14.0 -n harbor
+        
