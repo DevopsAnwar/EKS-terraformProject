@@ -25,25 +25,4 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
 
-      - name: Update kubeconfig
-        run: aws eks update-kubeconfig --region us-east-1 --name demo
-
-      - name: Install kubectl
-        run: | 
-          curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/darwin/amd64/kubectl
-
-      - name: Create ns  
-        run: | 
-          kubectl create ns vault
-
-      - name: Install Helm
-        run: |
-          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-          chmod +x get_helm.sh
-          ./get_helm.sh
-
-      - name: Deploy Helm Chart
-        run: |
-          helm repo add hashicorp https://helm.releases.hashicorp.com
-          helm install my-vault hashicorp/vault --version 0.27.0 -n vault
         
