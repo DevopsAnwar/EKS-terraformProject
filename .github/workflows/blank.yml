@@ -36,6 +36,7 @@ jobs:
 
       - name: Deploy Helm Chart
         run: |
+          kubectl create ns harbor
           helm repo add harbor https://helm.goharbor.io
           helm install my-harbor harbor/harbor --version 1.14.0 -n harbor
         
